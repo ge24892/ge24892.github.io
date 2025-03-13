@@ -9,6 +9,8 @@ You can reach me at example@email.com
 
 ### Basic Image Syntax
 ![BlackJack game Welcome screen.](content/image1.jpg)
+<img src="content/image1.jpg" alt="Example image" width="300" height="200">
+
 
 ### Local Video File
 <video width="320" height="240" controls>
