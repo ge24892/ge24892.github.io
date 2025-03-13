@@ -1,5 +1,6 @@
 # BlackJack 
 Playing BlackJack with two CC3200 Launchpads communicating
+
 <img src="content/image1.jpg" alt="Example image" width="400" height="400">
 
 
