@@ -1,14 +1,22 @@
 # BlackJack 
 Playing BlackJack with two CC3200 Launchpads
-
-<img src="content/image1.jpg" alt="Example image" width="400" height="400">
+![TitleImage](images/image0.jpg)
 
 
 ## Project Description
 This is my personal GitHub Pages site. Feel free to explore!
 
+
+#### Welcome Screen
+<img src="content/image1.jpg" alt="Example image" width="400" height="400">
+
+#### Recovery UI
+<img src="content/image2.jpg" alt="Example image" width="400" height="400">
+
+#### Betting UI
+
 ### Color Sensor
-You can reach me at example@email.com
+You can reach me
 
 ### UART Communication
 
