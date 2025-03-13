@@ -1,6 +1,6 @@
 # BlackJack 
 Playing BlackJack with two CC3200 Launchpads
-![TitleImage](images/image0.jpg)
+![TitleImage](content/image0.jpg)
 
 
 ## Project Description
