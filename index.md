@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>BlackJack Project</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-
-
 
 # BlackJack 
 Playing BlackJack with two CC3200 Launchpads
