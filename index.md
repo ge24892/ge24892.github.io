@@ -8,7 +8,7 @@ This is my personal GitHub Pages site. Feel free to explore!
 You can reach me at example@email.com
 
 ### Basic Image Syntax
-![Alt text description](content/image1.jpg)
+![BlackJack game Welcome screen.](content/image1.jpg)
 
 ### Local Video File
 <video width="320" height="240" controls>
