@@ -1,5 +1,5 @@
 # BlackJack 
-Playing BlackJack with two CC3200 Launchpads
+
 ![TitleImage](content/image0.jpg)
 
 
