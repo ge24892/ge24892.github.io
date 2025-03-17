@@ -45,8 +45,10 @@ The game continues round-by-round until the session ends or funds run out, with 
 <img src="content/image2.jpg" alt="Example image" width="400" height="400">
 
 #### Betting UI
-<img src="content/IMG_0220.webp" alt="Example image" width="400" height="400">
+
+
 #### Game UI
+<img src="content/IMG_0220.webp" alt="Example image" width="400" height="400">
 
 ### Video Demonstration
 <video width="320" height="240" controls>
