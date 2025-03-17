@@ -40,10 +40,14 @@ The game continues round-by-round until the session ends or funds run out, with 
 
 ### Video Demonstration
 
+*Recovered Game Followed By Regular GamePlay:*
+<video width="320" height="240" controls>
+  <source src="content/IMG_0219 (2).mp4" type="video/mp4">
+</video>
+
+*Betting Functionality:*
 <video width="320" height="240" controls>
   <source src="content/IMG_0210.mp4" type="video/mp4">
-  <source src="content/IMG_0210.MOV" type="video/quicktime">
-  Your browser does not support the video tag.
 </video>
 
 ## video test
