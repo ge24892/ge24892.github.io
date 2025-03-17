@@ -46,13 +46,7 @@ The game continues round-by-round until the session ends or funds run out, with 
 
 #### Betting UI
 
-### Color Sensor
-You can reach me
-
-### UART Communication
-
-### IR Receiver
-
+#### Game UI
 
 ### Video Demonstration
 <video width="320" height="240" controls>
