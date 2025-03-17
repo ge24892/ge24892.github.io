@@ -7,6 +7,7 @@ Playing BlackJack with two CC3200 Launchpads
 ### *Card Game Implementation*
 
 *Card Rendering & UI Design:*
+
 We began by implementing the card component on our OLED. Using techniques from our in-class Lab 2, we developed a function to draw cards by:
 
 -Drawing a rectangle to represent the card.
