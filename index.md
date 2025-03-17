@@ -39,13 +39,14 @@ The player chooses to hit or stand; the microcontrollers communicate via UART to
 The game continues round-by-round until the session ends or funds run out, with AWS available for game recovery if needed.
 
 ### Video Demonstration
+
 <video width="320" height="240" controls>
   <source src="content/IMG_0210.mp4" type="video/mp4">
   <source src="content/IMG_0210.MOV" type="video/quicktime">
   Your browser does not support the video tag.
 </video>
 
-
+## video test
 <video width="960" height="720" controls>
   <source src="content/video.mp4" type="video/mp4">
   Your browser does not support the video tag.
