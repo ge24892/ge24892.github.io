@@ -45,6 +45,13 @@ The game continues round-by-round until the session ends or funds run out, with 
   Your browser does not support the video tag.
 </video>
 
+
+<video width="960" height="720" controls>
+  <source src="content/video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+
 #### Welcome Screen
 <img src="content/image1.jpg" alt="Example image" width="400" height="400">
 
