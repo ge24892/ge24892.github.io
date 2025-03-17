@@ -7,11 +7,14 @@ Playing BlackJack with two CC3200 Launchpads
 Card Game Implementation
 
 Card Rendering & UI Design:
-We began by implementing the card component on our OLED. Using techniques from Lab 2, we developed a function to draw cards by:
+We began by implementing the card component on our OLED. Using techniques from our in-class Lab 2, we developed a function to draw cards by:
 
 -Drawing a rectangle to represent the card.
+
 -Calculating the text placement based on the rectangle’s dimensions and calling a text-drawing function (Outstr) to render the card’s value and suit.
+
 -Automatically setting the text color according to the suit.
+
 Card values and suits are stored as characters and integers—with ten represented by a 'T' that the function converts into two digits. We defined a specific region on the OLED where cards are drawn. The rest of the UI was built using trial and error: drawing rectangles for casino table borders, using a green background to mimic felt, and placing guiding text.
 
 Screen Flow & Game Logic:
