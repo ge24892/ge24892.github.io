@@ -38,7 +38,7 @@ Poker chips are scanned via the color sensor to set bets.
 The player chooses to hit or stand; the microcontrollers communicate via UART to determine the winner.
 The game continues round-by-round until the session ends or funds run out, with AWS available for game recovery if needed.
 
-## video test
+## Video Demonstration
 <video width="960" height="720" controls>
   <source src="content/video.mp4" type="video/mp4">
   Your browser does not support the video tag.
