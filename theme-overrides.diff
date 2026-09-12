@@ -1,0 +1,306 @@
+# Snapshot of every change this site makes to the serene theme's templates.
+#
+# Files under templates/ take precedence over themes/serene/templates/, so these
+# are the local customisations. Regenerate with:
+#
+#   ./scripts/theme-overrides.sh
+#
+# Files listed as "new file" do not exist in the theme at all.
+# After `git submodule update --remote themes/serene`, re-apply these changes by
+# hand — see the "Theme overrides" section of the README for a summary.
+--- a/themes/serene/templates/_base.html
++++ b/templates/_base.html
+@@ -12,6 +12,8 @@
+   <link rel="icon" type="image/png" sizes="32x32" href="{{ get_url(path='img/favicon-32x32.png') }}">
+   <link rel="icon" type="image/png" sizes="16x16" href="{{ get_url(path='img/favicon-16x16.png') }}">
+   <link rel="apple-touch-icon" sizes="180x180" href="{{ get_url(path='img/apple-touch-icon.png') }}">
++  {% include "_lang_alternates.html" %}
++  {% include "_lang_redirect.html" %}
+   {% include "_custom_font.html" %}
+   {% include "_custom_css.html" %}
+   <link rel="stylesheet" href="{{ get_url(path='main.css') }}">
+--- a/themes/serene/templates/_components/collection.html
++++ b/templates/_components/collection.html
+@@ -5,14 +5,22 @@
+   an HTML block, and no lines indented by 4+ spaces.
+ 
+   Collection file schema:
++    path    = optional, explicit path of the toml file (relative to the site root),
++              overrides the default `content/<section.path>/<file>` lookup. Needed
++              on translated pages: for a section at /zh/projects/ the default
++              lookup would be content/zh/projects/, which does not exist.
+     layout  = "card" | "row" | "tile" | "gallery"   (default "card")
+     flow    = "stack" | "inline" | "grid"           (default: card/gallery -> "stack", row/tile -> "inline")
+     [[item]]
+     title / subtitle / content / icon / image / link / badge / tags / featured / rotate
++    link_lang = optional, value for the link's `hreflang` attribute. Set it when
++                `link` points at content in another language, e.g. a project that
++                only exists in English from a Chinese page (also makes
++                scripts/check-i18n-links.py accept the link).
+ #}
+ 
+-{% component collection(file: string, section) -%}
+-{%- set data = load_data(path="content" ~ section.path ~ file, format="toml") -%}
++{% component collection(file: string = "", section = {}, path: string = "") -%}
++{%- set data = load_data(path=(path if path != "" else "content" ~ section.path ~ file), format="toml") -%}
+ {%- set layout = data.layout if data.layout is defined else "card" -%}
+ {%- if layout not in ["card", "row", "tile", "gallery"] -%}
+ {%- set layout = "card" -%}
+@@ -53,7 +61,7 @@
+ <div class="meta">
+ {%- if icon_src -%}<span class="icon"><img class="no-lightense" src="{{ icon_src }}" alt="" width="16" height="16"></span>{%- endif -%}
+ {%- if item.link -%}
+-<a class="title" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}><span>{{ item.title }}</span></a>
++<a class="title" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}{% if item.link_lang %} hreflang="{{ item.link_lang }}"{% endif %}><span>{{ item.title }}</span></a>
+ {%- else -%}
+ <span class="title">{{ item.title }}</span>
+ {%- endif -%}
+@@ -81,7 +89,7 @@
+ <span class="main">
+ {%- if icon_src -%}<span class="icon"><img class="no-lightense" src="{{ icon_src }}" alt="" width="16" height="16"></span>{%- endif -%}
+ {%- if item.link -%}
+-<a class="title" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}><span>{{ item.title }}</span></a>
++<a class="title" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}{% if item.link_lang %} hreflang="{{ item.link_lang }}"{% endif %}><span>{{ item.title }}</span></a>
+ {%- else -%}
+ <span class="title">{{ item.title }}</span>
+ {%- endif -%}
+@@ -91,7 +99,7 @@
+ </span>
+ {%- elif layout == "tile" -%}
+ {%- if item.link -%}
+-<a class="item" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}>
++<a class="item" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}{% if item.link_lang %} hreflang="{{ item.link_lang }}"{% endif %}>
+ {%- else -%}
+ <span class="item">
+ {%- endif -%}
+@@ -110,7 +118,7 @@
+ {%- if img_src -%}<div class="image"><img src="{{ img_src }}" alt="{{ item.title }}"></div>{%- endif -%}
+ <div class="text">
+ {%- if item.link -%}
+-<a class="title" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}><span>{{ item.title }}</span></a>
++<a class="title" href="{{ item.link }}"{% if external %} target="_blank" rel="noreferrer noopener"{% endif %}{% if item.link_lang %} hreflang="{{ item.link_lang }}"{% endif %}><span>{{ item.title }}</span></a>
+ {%- else -%}
+ <span class="title">{{ item.title }}</span>
+ {%- endif -%}
+--- a/themes/serene/templates/_components/prose.html
++++ b/templates/_components/prose.html
+@@ -5,10 +5,10 @@
+   middle of an HTML block, and no lines indented by 4+ spaces.
+ #}
+ 
+-{% component back_link(path: string, config) %}
++{% component back_link(path: string, config, text: string = "Back") %}
+ <header>
+   <nav>
+-    <a id="back-link" href="{{ path }}">← {{ config.extra.back_link_text }}</a>
++    <a id="back-link" href="{{ path }}">← {{ text }}</a>
+   </nav>
+ </header>
+ {% endcomponent back_link %}
+--- a/themes/serene/templates/_custom_css.html
++++ b/templates/_custom_css.html
+@@ -56,4 +56,33 @@
+     --detail-border-color: var(--primary-color);
+   }
+ 
++  /* Chinese pages: prefer the CJK fonts already installed on the visitor's
++     device (nothing to download), and give the denser glyphs a little more
++     breathing room. `:lang(zh)` matches because <html lang> is set from the
++     `lang` front-matter of each translated page. */
++  body:lang(zh) {
++    --main-font: ui-sans-serif, system-ui, "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "WenQuanYi Micro Hei", sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
++    --line-height: 1.9;
++  }
++
++  /* Square avatar instead of the theme's circle (only applies while
++     `[extra] avatar` is set in zola.toml — it is currently commented out).
++     Needs a higher specificity than `body.homepage #info img` (main.css is
++     loaded after this file). Use e.g. `border-radius: 8px` for a rounded square. */
++  html body.homepage #info img {
++    border-radius: 0;
++  }
++
++  /* Language switcher in the footer. The one on the home page lives in the nav
++     row and is styled by the theme's `#links` rules instead. */
++  footer .lang-switch {
++    color: var(--text-pale-color);
++    text-decoration: none;
++  }
++  footer .lang-switch:hover {
++    color: var(--text-pale-color);
++    text-decoration: underline;
++    text-underline-offset: 4px;
++  }
++
+ </style>
+--- a/themes/serene/templates/_footer.html
++++ b/templates/_footer.html
+@@ -9,15 +9,17 @@
+ <footer>
+   <div class="left">
+     <div class="copyright">
+-      {{ config.extra.footer_copyright }}
++      {{ trans(key="footer_copyright") }}
+       {% if config.extra.footer_credits %}
+       <span>|</span>
+-      Built with <a href="https://www.getzola.org" rel="noreferrer" target="_blank">zola</a> and <a href="https://github.com/isunjn/serene" rel="noreferrer" target="_blank">serene</a>
++      {{ trans(key="footer_credits_before") }} <a href="https://www.getzola.org" rel="noreferrer" target="_blank">zola</a> {{ trans(key="footer_credits_and") }} <a href="https://github.com/isunjn/serene" rel="noreferrer" target="_blank">serene</a> {{ trans(key="footer_credits_after") }}
+       {% endif %}
+     </div>
+   </div>
+ 
+   <div class="right">
++    {% include "_lang_switch.html" %}
++
+     {% if show_rss %}
+     <a id="rss-btn" href="{{ get_url(path=rss_path) }}">RSS</a>
+     {% endif %}
+--- a/themes/serene/templates/home.html
++++ b/templates/home.html
+@@ -8,7 +8,7 @@
+   {{ <seo config
+       title={config.title}
+       desc={config.description}
+-      url={get_url(path="/")}
++      url={section.permalink}
+       lang={og_lang} /> }}
+ {% endblock desc %}
+ 
+@@ -51,25 +51,28 @@
+       {% endif %}
+       <div id="text">
+         <div>
+-          <span id="name">{{ config.extra.name }}</span>
++          <span id="name">{{ trans(key="name") }}</span>
+           {% if config.extra.handle %}
+           <span id="id">@{{ config.extra.handle }}</span>
+           {% endif %}
+         </div>
+-        {% if config.extra.bio %}
+-        <div id="bio"> {{ config.extra.bio }} </div>
+-        {% endif %}
++        <div id="bio"> {{ trans(key="bio") }} </div>
+       </div>
+     </section>
+     <section id="links">
+       <div id="left">
+         {% for item in config.extra.nav %}
+         {% if item.path is starting_with(pat="/") and item.path is not starting_with(pat="//") %}
+-        <a href="{{ get_url(path=item.path) }}" class="instant">{{ item.name }}</a>
++        {# `get_url` only adds the language prefix when `lang` is passed
++           explicitly for plain (non-`@/`) paths, so it must be given here.
++           `trailing_slash` keeps the URL identical to the page's canonical
++           permalink (e.g. "/zh/about/"). #}
++        <a href="{{ get_url(path=item.path, lang=lang, trailing_slash=true) }}" class="instant">{{ trans(key=item.name) }}</a>
+         {% else %}
+-        <a href="{{ item.path }}" class="external" target="_blank" rel='noreferrer noopener'>{{ item.name }}</a>
++        <a href="{{ item.path }}" class="external" target="_blank" rel='noreferrer noopener'>{{ trans(key=item.name) }}</a>
+         {% endif %}
+         {% endfor %}
++        {% include "_lang_switch.html" %}
+       </div>
+       <div id="right">
+         {% for link in config.extra.links %}
+@@ -97,6 +100,9 @@
+     {% set section_md_path = blog_section_path ~ "/_index.md" %}
+     {% set blog_section = get_section(path=section_md_path) %}
+     {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
++    {# Only render the recent list when the current language actually has posts,
++       otherwise an empty list with just the "more" link is left behind. #}
++    {% if blog_section.pages | length > 0 %}
+     <section class="layout-list">
+       <div class="post-list">
+         {% for post in blog_section.pages[:section.extra.recent_max] %}
+@@ -107,9 +113,10 @@
+         {% endfor %}
+       </div>
+       <div class="read-more">
+-        <a class="instant" href="{{ config.extra.blog_section_path }}">{{ section.extra.recent_more_text }}</a>
++        <a class="instant" href="{{ blog_section.permalink }}">{{ section.extra.recent_more_text }}</a>
+       </div>
+     </section>
++    {% endif %}
+   {% endif %}
+   </main>
+   {% if section.extra.footer %}
+new file: templates/_lang_alternates.html (not present in the theme)
+new file: templates/_lang_redirect.html (not present in the theme)
+new file: templates/_lang_switch.html (not present in the theme)
+--- a/themes/serene/templates/post.html
++++ b/templates/post.html
+@@ -90,7 +90,10 @@
+     {% endif %}
+   </aside>
+   <main>
+-    {{ <back_link path={get_url(path=section.path)} config /> }}
++    {# Sections without their own list page (render = false) can send the back
++       link to the home page instead: `back_to_home = true` in their [extra]. #}
++    {% set back_link_path = get_url(path="@/_index.md") if section.extra.back_to_home is defined and section.extra.back_to_home else get_url(path=section.path) %}
++    {{ <back_link path={back_link_path} config text={trans(key="back")} /> }}
+ 
+     <div>
+       {% set allow_copy = page.extra.code_copy if page.extra.code_copy is defined else (section.extra.code_copy if section.extra.code_copy is defined else (config.extra.code_copy if config.extra.code_copy is defined else false)) %}
+--- a/themes/serene/templates/posts.html
++++ b/templates/posts.html
+@@ -19,7 +19,7 @@
+ 
+ {% block content %}
+ <div id="wrapper">
+-  {{ <back_link path={get_url(path="/")} config /> }}
++  {{ <back_link path={get_url(path="@/_index.md")} config text={trans(key="back")} /> }}
+   {% include "_section_title.html" %}
+   <main class="layout-list">
+     {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
+--- a/themes/serene/templates/prose.html
++++ b/templates/prose.html
+@@ -48,7 +48,7 @@
+ {% block content %}
+ <div id="wrapper">
+   <main>
+-    {{ <back_link path={get_url(path="/")} config /> }}
++    {{ <back_link path={get_url(path="@/_index.md")} config text={trans(key="back")} /> }}
+     {% include "_section_title.html" %}
+     <div>
+       {% set allow_copy = section.extra.code_copy if section.extra.code_copy is defined else (config.extra.code_copy if config.extra.code_copy is defined else false) %}
+--- a/themes/serene/templates/tags/list.html
++++ b/templates/tags/list.html
+@@ -7,23 +7,23 @@
+ {% set section = get_section(path=section_md_path, metadata_only=true) %}
+ {%- if section.extra.lang %}{{ section.extra.lang }}{% else %}{{ lang }}{% endif -%}
+ {%- endblock lang %}
+-{% block title %}Tags{% endblock title %}
++{% block title %}{{ trans(key="tags") }}{% endblock title %}
+ {% block desc %}
+   {%- set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") -%}
+   {%- set section = get_section(path=blog_section_path ~ "/_index.md", metadata_only=true) -%}
+   {%- if section.extra.lang %}{% set og_lang = section.extra.lang %}{% else %}{% set og_lang = lang %}{% endif -%}
+   {{ <seo config
+-      title="Tags"
+-      desc="Tags"
++      title={trans(key="tags")}
++      desc={trans(key="tags")}
+       url={current_url or ""}
+       lang={og_lang} /> }}
+ {% endblock desc %}
+ 
+ {% block content %}
+ <div id="wrapper">
+-  {{ <back_link path={get_url(path="/")} config /> }}
++  {{ <back_link path={get_url(path="@/_index.md")} config text={trans(key="back")} /> }}
+   <main>
+-    <h1 class="title">Tags</h1>
++    <h1 class="title">{{ trans(key="tags") }}</h1>
+     <div class="tags">
+       {% for tag in terms -%}
+       <a class="instant" href="{{ tag.permalink }}"># {{ tag.name | lower }}</a>
+--- a/themes/serene/templates/tags/single.html
++++ b/templates/tags/single.html
+@@ -22,7 +22,7 @@
+ {% block content %}
+ <div id="wrapper">
+   {% set tags_taxonomy = get_taxonomy(kind="tags") %}
+-  {{ <back_link path={tags_taxonomy.permalink} config /> }}
++  {{ <back_link path={tags_taxonomy.permalink} config text={trans(key="back")} /> }}
+   <main class="layout-list">
+     <div class="title">
+       <span># {{ term.name }}</span>

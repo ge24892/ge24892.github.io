@@ -1,0 +1,31 @@
+{#-
+  Language switcher.
+
+  Renders one link per *other* configured language. The link points to the same
+  content in that language when a translation exists, and falls back to that
+  language's home page otherwise (e.g. a post that only exists in English).
+
+  `config.languages` only contains the languages other than the active one, and
+  `translations` (on a page or a section) only contains languages that actually
+  have a translation.
+
+  Display names come from `[extra] lang_names` in zola.toml.
+-#}
+{% set_global lang_switch_translations = [] %}
+{% if page is defined and page.translations is defined %}
+  {% set_global lang_switch_translations = page.translations %}
+{% elif section is defined and section.translations is defined %}
+  {% set_global lang_switch_translations = section.translations %}
+{% endif %}
+{% for code, options in config.languages %}
+  {% set_global lang_switch_url = "" %}
+  {% for translation in lang_switch_translations %}
+    {% if translation.lang == code %}{% set_global lang_switch_url = translation.permalink %}{% endif %}
+  {% endfor %}
+  {% if lang_switch_url == "" %}{% set_global lang_switch_url = get_url(path="@/_index.md", lang=code) %}{% endif %}
+  {% set_global lang_switch_name = code %}
+  {% if config.extra.lang_names is defined and config.extra.lang_names[code] is defined %}
+    {% set_global lang_switch_name = config.extra.lang_names[code] %}
+  {% endif %}
+  <a class="lang-switch instant" href="{{ lang_switch_url }}" hreflang="{{ code }}" lang="{{ code }}">{{ lang_switch_name }}</a>
+{% endfor %}

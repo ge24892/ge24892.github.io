@@ -1,0 +1,73 @@
+name: Build and deploy to GitHub Pages
+
+# One-time setup in the repository:
+#   Settings -> Pages -> Build and deployment -> Source = "GitHub Actions"
+#
+# After that, every push to `main` builds the site with Zola and publishes
+# `public/` to https://ge24892.github.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment, but never cancel a run in progress
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # Keep in sync with the `min_version` of themes/serene (see themes/serene/theme.toml)
+  ZOLA_VERSION: "0.23.5"
+  ZOLA_SHA256: "f9b864c54fb8ef598ae34337d72a0e9f24e84a0b051657a7f231a3f2a3c02e34"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          submodules: true # the serene theme lives in themes/serene as a submodule
+
+      - name: Install Zola ${{ env.ZOLA_VERSION }}
+        run: |
+          set -euo pipefail
+          url="https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          curl -sSfL "$url" -o /tmp/zola.tar.gz
+          echo "${ZOLA_SHA256}  /tmp/zola.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/zola.tar.gz -C /usr/local/bin zola
+          zola --version
+
+      - name: Build site
+        run: zola build
+
+      - name: Check site
+        run: zola check # fails on broken internal links / template errors
+
+      - name: Check i18n links
+        run: python3 scripts/check-i18n-links.py # fails if /zh/ links to English pages
+
+      - name: Check language parity
+        run: python3 scripts/check-language-parity.py # fails if a layout change was made for one language only
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

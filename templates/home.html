@@ -1,0 +1,137 @@
+{% extends "_base.html" %}
+
+{% block page %}homepage{% endblock page%}
+{% block lang %}{% if section.extra.lang %}{{ section.extra.lang }}{% else %}{{ section.lang }}{% endif %}{% endblock lang %}
+{% block title %}{{ config.title }}{% endblock title %}
+{% block desc %}
+  {%- if section.extra.lang %}{% set og_lang = section.extra.lang %}{% else %}{% set og_lang = section.lang %}{% endif -%}
+  {{ <seo config
+      title={config.title}
+      desc={config.description}
+      url={section.permalink}
+      lang={og_lang} /> }}
+{% endblock desc %}
+
+{% block head %}
+{% if config.markdown.highlighting.style == "class" %}
+  {% if color_scheme == "dark" %}
+    <link id="hl" rel="stylesheet" type="text/css" href="{{ get_url(path='giallo-dark.css') }}" />
+  {% else %}
+    <link id="hl" rel="stylesheet" type="text/css" href="{{ get_url(path='giallo-light.css') }}" />
+  {% endif %}
+{% endif %}
+{% set enable_math = section.extra.math if section.extra.math is defined else (config.extra.math if config.extra.math is defined else false) %}
+{% if enable_math %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.6/dist/katex.min.css" integrity="sha384-M59ezskvvpvT+a+C1x088YJ3DVmK+wZdX0UkVKalOI4Qi5Nwv0WrvpqHcfa2HQqB" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.6/dist/katex.min.js" integrity="sha384-7jGyG5zFwmEamqNWdCbpsPn+GTWEis3lnV7X/jXHyhFpJG7ExABLyMapabg8F4+p" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.6/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.6/dist/contrib/copy-tex.min.js" integrity="sha384-Pe2JWbaShhSRT0SESJ9XLPeAsi4yrNi7r/CiH0Coq7giBjK5a6Ae7XcybE8rNlQP" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+        });
+    });
+</script>
+{% endif %}
+{% endblock head %}
+
+{% block content %}
+<div id="wrapper">
+  <main>
+    <section id="info">
+      {% if config.extra.avatar %}
+      <img src="{{ get_url(path=config.extra.avatar) }}" alt="avatar">
+      {% endif %}
+      <div id="text">
+        <div>
+          <span id="name">{{ trans(key="name") }}</span>
+          {% if config.extra.handle %}
+          <span id="id">@{{ config.extra.handle }}</span>
+          {% endif %}
+        </div>
+        <div id="bio"> {{ trans(key="bio") }} </div>
+      </div>
+    </section>
+    <section id="links">
+      <div id="left">
+        {% for item in config.extra.nav %}
+        {% if item.path is starting_with(pat="/") and item.path is not starting_with(pat="//") %}
+        {# `get_url` only adds the language prefix when `lang` is passed
+           explicitly for plain (non-`@/`) paths, so it must be given here.
+           `trailing_slash` keeps the URL identical to the page's canonical
+           permalink (e.g. "/zh/about/"). #}
+        <a href="{{ get_url(path=item.path, lang=lang, trailing_slash=true) }}" class="instant">{{ trans(key=item.name) }}</a>
+        {% else %}
+        <a href="{{ item.path }}" class="external" target="_blank" rel='noreferrer noopener'>{{ trans(key=item.name) }}</a>
+        {% endif %}
+        {% endfor %}
+        {% include "_lang_switch.html" %}
+      </div>
+      <div id="right">
+        {% for link in config.extra.links %}
+        <a href="{{ link.url }}" aria-label="{{ link.name }}" target="_blank" rel='noreferrer noopener{% if link.rel_me%} me{% endif %}'>
+          {% set icon_path = "icon/" ~ link.icon ~ ".svg" %}
+          {% set icon = load_data(path=icon_path) %}
+          {{ icon | safe }}
+        </a>
+        {% endfor %}
+        {% if not section.extra.footer and color_scheme == "auto" %}
+        {% set moon_icon = load_data(path="icon/moon.svg") %}
+        {% set sun_icon = load_data(path="icon/sun.svg") %}
+        <button id="theme-toggle" aria-label="theme switch">
+          <span class="moon-icon">{{ moon_icon | safe }}</span>
+          <span class="sun-icon">{{ sun_icon | safe }}</span>
+        </button>
+        {% endif %}
+      </div>
+    </section>
+    <section id="brief" class="prose">
+      {{ section.content | trim | safe }}
+    </section>
+    {% if section.extra.recent %}
+    {% set blog_section_path = config.extra.blog_section_path | trim_start(pat="/") %}
+    {% set section_md_path = blog_section_path ~ "/_index.md" %}
+    {% set blog_section = get_section(path=section_md_path) %}
+    {% set date_format = section.extra.date_format if section.extra.date_format is defined else (config.extra.date_format if config.extra.date_format is defined else "%b %-d, %Y") %}
+    {# Only render the recent list when the current language actually has posts,
+       otherwise an empty list with just the "more" link is left behind. #}
+    {% if blog_section.pages | length > 0 %}
+    <section class="layout-list">
+      <div class="post-list">
+        {% for post in blog_section.pages[:section.extra.recent_max] %}
+        <a class="post instant {% if post.extra.featured %}featured{% endif %}" href="{{ post.permalink }}">
+          <span>{{ post.title }}</span>
+          <span class="date">{{ post.date | date(format=date_format) }}</span>
+        </a>
+        {% endfor %}
+      </div>
+      <div class="read-more">
+        <a class="instant" href="{{ blog_section.permalink }}">{{ section.extra.recent_more_text }}</a>
+      </div>
+    </section>
+    {% endif %}
+  {% endif %}
+  </main>
+  {% if section.extra.footer %}
+    {% include "_footer.html" %}
+  {% endif %}
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="{{ get_url(path='js/lightense.min.js') }}"></script>
+{% set enable_mermaid = section.extra.mermaid if section.extra.mermaid is defined else (config.extra.mermaid if config.extra.mermaid is defined else false) %}
+{% if enable_mermaid %}
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+{% endif %}
+{% endblock script %}

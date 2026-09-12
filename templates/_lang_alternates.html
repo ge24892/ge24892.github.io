@@ -1,0 +1,24 @@
+{#-
+  hreflang alternates for search engines.
+
+  Rendered from <head> in _base.html (outside of any block, so it runs for every
+  page). Only emitted when the current page or section actually has more than
+  one language, and `x-default` points at the default language version.
+
+  Works for page templates (`page.translations`) and section templates
+  (`section.translations`); on the 404 page neither exists, so nothing is emitted.
+-#}
+{% set_global lang_alternates = [] %}
+{% if page is defined and page.translations is defined %}
+  {% set_global lang_alternates = page.translations %}
+{% elif section is defined and section.translations is defined %}
+  {% set_global lang_alternates = section.translations %}
+{% endif %}
+{% if lang_alternates | length > 1 %}
+  {%- for alternate in lang_alternates %}
+  <link rel="alternate" hreflang="{{ alternate.lang }}" href="{{ alternate.permalink }}">
+  {%- endfor %}
+  {%- for alternate in lang_alternates %}{% if alternate.lang == config.default_language %}
+  <link rel="alternate" hreflang="x-default" href="{{ alternate.permalink }}">
+  {%- endif %}{% endfor %}
+{% endif %}

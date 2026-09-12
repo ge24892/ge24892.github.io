@@ -1,0 +1,63 @@
+{#-
+  Automatic language selection.
+
+  A static host cannot read the browser's Accept-Language header, so this runs in
+  the browser. It is included right after `_lang_alternates.html` in <head>, which
+  means it runs before the body is parsed (no flash of the wrong language) and it
+  can reuse the `hreflang` alternates as the source of truth: if the current page
+  has no version in the visitor's language, nothing happens (no 404 redirects).
+
+  Signals, in order:
+    1. `?lang=en` / `?lang=zh` in the URL — wins over everything, and is remembered
+    2. a language the visitor picked earlier with the language switcher (localStorage)
+    3. `navigator.languages` / `navigator.language`
+    4. the time zone, only if the browser language gives no usable signal
+
+  Disable it with `lang_auto_redirect = false` in `[extra]` of zola.toml.
+-#}
+{% if config.extra.lang_auto_redirect | default(value=true) %}
+<script>
+  (function () {
+    var KEY = 'zola-lang-choice';
+    var current = (document.documentElement.lang || '{{ config.default_language }}').toLowerCase().slice(0, 2);
+    var store = null;
+    try { store = window.localStorage; } catch (e) { /* private mode */ }
+    function remember(lang) { try { if (store) store.setItem(KEY, lang); } catch (e) {} }
+    function choice() { try { return store ? store.getItem(KEY) : null; } catch (e) { return null; } }
+
+    // an explicit switch with the language switcher wins from then on
+    document.addEventListener('click', function (event) {
+      var link = event.target && event.target.closest ? event.target.closest('a.lang-switch') : null;
+      if (link) remember((link.getAttribute('lang') || '').toLowerCase().slice(0, 2));
+    });
+
+    var forced = new URLSearchParams(window.location.search).get('lang');
+    if (forced) { forced = forced.toLowerCase().slice(0, 2); remember(forced); }
+
+    var wanted = forced || choice();
+    if (!wanted) {
+      var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+      for (var i = 0; i < prefs.length; i++) {
+        var pref = (prefs[i] || '').toLowerCase();
+        if (pref.indexOf('zh') === 0) { wanted = 'zh'; break; }
+        if (pref.indexOf('en') === 0) { wanted = 'en'; break; }
+      }
+    }
+    if (!wanted && typeof Intl !== 'undefined') {
+      // No usable browser language (e.g. "fr"): a Chinese time zone is a decent
+      // guess that the visitor reads Chinese. Remove this block to drop the signal.
+      try {
+        var zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        if (['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Harbin', 'Asia/Urumqi',
+             'Asia/Macau', 'Asia/Hong_Kong', 'Asia/Taipei'].indexOf(zone) !== -1) wanted = 'zh';
+      } catch (e) {}
+    }
+    if (!wanted || wanted === current) return;
+
+    // the counterpart of this page, as emitted by _lang_alternates.html
+    var alternate = document.querySelector('link[rel="alternate"][hreflang="' + wanted + '"]');
+    if (!alternate) return;
+    window.location.replace(alternate.getAttribute('href'));
+  })();
+</script>
+{% endif %}

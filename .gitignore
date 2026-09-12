@@ -1,0 +1,9 @@
+# Zola build output
+/public
+
+# Zola / editor junk
+.DS_Store
+*.swp
+
+# The theme is a git submodule, do not track its contents here
+# (the submodule itself is recorded in .gitmodules)

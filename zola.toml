@@ -1,0 +1,150 @@
+base_url = "https://ge24892.github.io"
+title = "Ziyu He"                          # site title, used in the browser tab / SEO
+description = "Portfolio of Ziyu He"       # one-line site description
+default_language = "en"
+theme = "serene"
+output_dir = "public"
+compile_sass = true
+minify_html = false # Keep this false, as it may cause issues with some styles
+build_search_index = false # Keep this false, search is temporarily unsupported
+generate_feeds = false # Per-section feeds are enabled in content/posts/_index.md
+feed_filenames = ["feed.xml"] # "feed.xml" | "atom.xml" | "rss.xml"
+taxonomies = [{ name = "tags" }]
+
+# =========================================================================================
+# Languages
+#
+# English is the default language and lives at the root of the site, Chinese lives
+# under /zh/. Content is translated with filename suffixes: `_index.md` is English,
+# `_index.zh.md` is Chinese. Every `_index.md` needs a matching `_index.zh.md`,
+# there is no language fallback for sections.
+#
+# Zola only supports `title`, `description`, `generate_feeds`, `feed_filenames`,
+# `taxonomies`, `build_search_index`, `search` and `translations` per language —
+# `[languages.zh.extra]` does NOT exist. That is why every translatable UI string
+# lives in the translation tables below and is rendered with `trans(key="...")`
+# in the overridden templates.
+
+[languages.zh]
+title = "何梓瑜"                    # shown as the page title of Chinese pages
+description = "何梓瑜的作品集：机器人学习、VLA 模型与仿真到真机"
+# Taxonomies are NOT inherited from the top-level config, they must be repeated:
+taxonomies = [{ name = "tags" }]
+# Feed filenames are NOT inherited either — without this, Chinese feeds would be
+# written as atom.xml (Zola's built-in template) instead of feed.xml (the theme's).
+feed_filenames = ["feed.xml"]
+
+# UI strings for the default language (English).
+# NOTE: a missing key is a hard build error, so every key must be defined for
+# every language.
+[translations]
+name = "Ziyu He"                                 # shown on the home page
+bio = "Student at Columbia University"           # shown on the home page
+back = "Back"                               # back link on subpages
+tags = "Tags"                               # heading of the tag pages
+nav_projects = "projects"
+nav_about = "about"
+nav_posts = "posts"
+nav_github = "github"
+footer_copyright = "© 2026 Ziyu He"
+footer_credits_before = "Built with"        # → "Built with zola and serene"
+footer_credits_and = "and"
+footer_credits_after = ""
+
+[languages.zh.translations]
+name = "何梓瑜"
+bio = "哥伦比亚大学机器人与控制硕士在读，研究机器人学习、VLA 模型与仿真到真机。"
+back = "返回"
+tags = "标签"
+nav_projects = "项目"
+nav_about = "关于"
+nav_posts = "文章"
+nav_github = "GitHub"
+footer_copyright = "© 2026 何梓瑜"
+footer_credits_before = "由"
+footer_credits_and = "和"
+footer_credits_after = "构建"
+
+[markdown]
+render_emoji = false
+external_links_target_blank = false
+external_links_no_follow = true
+external_links_no_referrer = true
+smart_punctuation = false
+github_alerts = true
+
+[markdown.highlighting]
+style = "class"
+light_theme = "github-light"
+dark_theme = "github-dark"
+
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+
+#=========================================================================================
+
+[extra]
+
+# Home page navigation. A path starting with "/" is an internal link,
+# anything else (e.g. an "https://" URL) opens in a new tab.
+# `name` is a translation key from the tables above (nav_projects, nav_about, ...),
+# so the labels are translated automatically.
+nav = [
+  # { name = "nav_posts", path = "/posts" },   # blog section (not used right now)
+  { name = "nav_about", path = "/about" },
+  # { name = "nav_projects", path = "/projects" }, # projects are on the home page now
+  { name = "nav_github", path = "https://github.com/ge24892" },
+]
+
+# Display names of the languages, used by the language switcher.
+# These are intentionally NOT translated (a language is always called the same).
+lang_names = { en = "English", zh = "中文" }
+
+# Send first-time visitors to /zh/ when their browser asks for Chinese (and back to
+# English for a Chinese-speaking browser on a /zh/ page). Implemented in
+# templates/_lang_redirect.html; set to false to always land on the URL as given.
+lang_auto_redirect = true
+
+# Your info on the home page. Comment out any line you don't want to display.
+# `name` and `bio` are translated: see the translation tables above.
+# handle = "ge24892" # shown as @handle next to the name on the home page
+avatar = "img/avatar.webp" # generated from profile.jpg by scripts/make-images.sh
+
+links = [
+  # { name = "GitHub", icon = "github", url = "https://github.com/ge24892" },
+  # { name = "Email", icon = "email", url = "mailto:you@example.com" },
+  # { name = "LinkedIn", icon = "linkedin", url = "https://linkedin.com/in/<your-username>" },
+  # { name = "Mastodon", icon = "mastodon", url = "https://mastodon.social/<your-username>", rel_me = true },
+] # icon row on the home page; left empty so only the light/dark switch is shown
+
+blog_section_path = "/posts" # Main blog section, used by the home page's recent list and tags pages
+
+color_scheme = "auto" # "auto" | "light" | "dark"
+
+# og_image = "img/og.png" # TODO: default image for social media previews (a static path or a full URL)
+
+footer_credits = true # Whether to show "Built with zola and serene" in the footer
+
+# The 404 page is rendered once, in the default language (Zola limitation).
+not_found_error_text = "404 Not Found"
+not_found_recover_text = "« back to home »"
+
+# Site-wide defaults of display options. Each can be overridden per section in
+# its _index.md (including the per-language ones), and again per post in the
+# post's front matter. `date_format` is overridden for Chinese in content/*/_index.zh.md.
+date_format = "%b %-d, %Y"
+toc = true # show table-of-contents
+code_copy = true # show copy button in code blocks
+comment = false # enable comments (requires templates/_giscus_script.html)
+math = false # enable formula rendering with KaTeX
+mermaid = false # enable chart rendering with Mermaid
+outdated_alert = false # show outdate alert after certain days
+outdated_alert_days = 120
+outdated_alert_text_before = "This article was last updated "
+outdated_alert_text_after = " days ago and may be out of date."
+
+reaction = false # anonymous emoji reactions (requires your own backend endpoint)
+reaction_align = "right" # "left" | "center" | "right"
+reaction_endpoint = "https://example.com/api/reaction"

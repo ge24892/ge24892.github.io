@@ -1,0 +1,88 @@
+<style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+  /* Chinese pages: prefer the CJK fonts already installed on the visitor's
+     device (nothing to download), and give the denser glyphs a little more
+     breathing room. `:lang(zh)` matches because <html lang> is set from the
+     `lang` front-matter of each translated page. */
+  body:lang(zh) {
+    --main-font: ui-sans-serif, system-ui, "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "WenQuanYi Micro Hei", sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --line-height: 1.9;
+  }
+
+  /* Square avatar instead of the theme's circle (only applies while
+     `[extra] avatar` is set in zola.toml — it is currently commented out).
+     Needs a higher specificity than `body.homepage #info img` (main.css is
+     loaded after this file). Use e.g. `border-radius: 8px` for a rounded square. */
+  html body.homepage #info img {
+    border-radius: 0;
+  }
+
+  /* Language switcher in the footer. The one on the home page lives in the nav
+     row and is styled by the theme's `#links` rules instead. */
+  footer .lang-switch {
+    color: var(--text-pale-color);
+    text-decoration: none;
+  }
+  footer .lang-switch:hover {
+    color: var(--text-pale-color);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+</style>
