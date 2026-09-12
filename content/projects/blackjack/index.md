@@ -22,6 +22,10 @@ toc = true
 
 *Card Rendering & UI Design:*
 
+Contributors:
+Ziyu He 
+Erik Soto
+
 We began by implementing the card component on our OLED. Using techniques from
 our in-class Lab 2, we developed a function to draw cards by:
 
