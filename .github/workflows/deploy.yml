@@ -8,7 +8,7 @@ name: Build and deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, WIP] # WIP deploys the placeholder page
   workflow_dispatch:
 
 permissions:
