@@ -52,7 +52,7 @@ link = "/projects/quad/"
 [[item]]
 title = "BlackJack"
 #subtitle = "Embedded Systems"
-content = "Card Game with CC3200 Launchpad & OLED Display A BlackJack card game rendered on an OLED display. Cards are drawn as rectangles, with the text colour chosen automatically by suit."
+content = "A BlackJack card game with two CC3200 Launchpads. Cards are shown on an OLED display."
 image = "/projects/blackjack/bet.jpg"
 link = "/projects/blackjack/"
 #badge = "2025"
