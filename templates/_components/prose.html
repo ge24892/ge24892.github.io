@@ -39,7 +39,7 @@
 {%- endcomponent detail %}
 
 
-{% component figure(src: string, alt: string = "", caption: string = "", width: string = "", height: string = "", page = {}, section = {}) -%}
+{% component figure(src: string, alt: string = "", caption: string = "", width: string = "", height: string = "", class: string = "", page = {}, section = {}) -%}
 {%- if src is starting_with(pat="/") or src is starting_with(pat="http://") or src is starting_with(pat="https://") or src is starting_with(pat="//") or src is starting_with(pat="data:") -%}
 {%- set image_src = src -%}
 {%- elif page?.colocated_path -%}
@@ -49,7 +49,7 @@
 {%- else -%}
 {%- set image_src = src -%}
 {%- endif -%}
-<figure>
+<figure{% if class %} class="{{ class }}"{% endif %}>
 <img src="{{ image_src }}"{% if alt %} alt="{{ alt }}"{% endif %}{% if height %} height="{{ height }}"{% endif %}{% if width %} width="{{ width }}"{% endif %}>
 {%- if caption -%}
 <figcaption>{{ caption | trim | markdown | trim | safe }}</figcaption>

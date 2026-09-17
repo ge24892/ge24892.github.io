@@ -11,46 +11,52 @@
 layout = "card"
 flow = "stack"
 
-[[item]]
-title = "LeRobot WAM World Model"
-subtitle = "world model / DiT / MuJoCo"
-content = "A LeRobot SO-101 pick-and-place setup in MuJoCo, used to train a WAM world model that predicts action and state sequences from visual observations and proprioception — 95% success in simulation."
-link = "/projects/lerobot-wam/"
-badge = "2026"
-tags = ["world model", "DiT", "MuJoCo"]
+# [[item]]
+# title = "LeRobot WAM World Model"
+# subtitle = "world model / DiT / MuJoCo"
+# content = "A LeRobot SO-101 pick-and-place setup in MuJoCo, used to train a WAM world model that predicts action and state sequences from visual observations and proprioception — 95% success in simulation."
+# link = "/projects/lerobot-wam/"
+# badge = "2026"
+# tags = ["world model", "DiT", "MuJoCo"]
 
 [[item]]
-title = "VLA Model Training"
-subtitle = "GR00T / π0 / on-robot deployment"
-content = "Full fine-tuning and LoRA fine-tuning of GR00T and π0 vision-language-action policies on self-collected teleoperation data, using open-loop evaluation and on-robot tuning to reach 90% pick-and-place success."
+title = "VLA Model Fine Tuning"
+#subtitle = "Robot Foundation Models"
+content = " Training a SO-101 Robot Arm with Pick and Place Task Full fine-tuning and LoRA fine-tuning of GR00T and π0 vision-language-action policies on self-collected teleoperation data, using open-loop evaluation and on-robot tuning to reach 90% pick-and-place success."
 link = "/projects/vla-training/"
-badge = "2026"
-tags = ["VLA", "GR00T", "fine-tuning"]
+#badge = "2026"
+#tags = ["VLA", "GR00T"]
 
 [[item]]
-title = "Sim2Real: Simulation to Real Robot"
-subtitle = "Isaac Sim / domain randomization"
-content = "A pick-and-place scene in Isaac Sim with camera and lighting domain randomization, then simulation-only fine-tuning of the VLA policy — pushing real-robot success to 80%."
+title = "Sim-to-Real"
+#subtitle = "Simulation"
+content = "Collect Teleop Dataset in Isaac Sim with camera and lighting domain randomization"
 link = "/projects/sim2real/"
-badge = "2026"
-tags = ["Isaac Sim", "domain randomization", "Sim2Real"]
+#badge = "2026"
+#tags = ["Isaac Sim", "Sim2Real"]
 
 [[item]]
-title = "Humanoid Reinforcement Learning (PPO)"
-subtitle = "reinforcement learning / Isaac Lab"
-content = "Implemented the PPO training loop from scratch in PyTorch, solved continuous-control tasks such as pendulum balancing, and trained a humanoid to walk stably in Isaac Lab."
-link = "/projects/humanoid-ppo/"
-badge = "2026"
-tags = ["reinforcement learning", "PPO", "Isaac Lab"]
+title = "Quadrupedal Robot"
+#subtitle = "CAD, Reinforcement Learning, Simulation"
+content = "Designing and implementing a Quadupedal Robot to walk"
+link = "/projects/quad/"
+
+# [[item]]
+# title = "Humanoid Reinforcement Learning (PPO)"
+# subtitle = "reinforcement learning / Isaac Lab"
+# content = "Implemented the PPO training loop from scratch in PyTorch, solved continuous-control tasks such as pendulum balancing, and trained a humanoid to walk stably in Isaac Lab."
+# link = "/projects/humanoid-ppo/"
+# badge = "2026"
+# tags = ["reinforcement learning", "PPO", "Isaac Lab"]
 
 [[item]]
 title = "BlackJack"
-subtitle = "OLED card game"
-content = "A BlackJack card game rendered on an OLED display. Cards are drawn as rectangles, with the text colour chosen automatically by suit."
+#subtitle = "Embedded Systems"
+content = "Card Game with CC3200 Launchpad & OLED Display A BlackJack card game rendered on an OLED display. Cards are drawn as rectangles, with the text colour chosen automatically by suit."
 image = "/projects/blackjack/bet.jpg"
 link = "/projects/blackjack/"
-badge = "2026"
-tags = ["embedded", "C"]
+#badge = "2025"
+#tags = ["embedded", "C++"]
 
 # [[item]]
 # title = "Project with an image and an icon"

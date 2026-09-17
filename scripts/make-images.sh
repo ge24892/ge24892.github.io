@@ -8,14 +8,13 @@
 #
 # Usage:  ./scripts/make-images.sh
 #
-# The source is a dark night shot, so the crop is taken around the face and the
-# exposure is lifted — more for the favicons, which would otherwise be a dark
-# blob at 16 px. If profile.jpg is replaced with a different picture, adjust
-# `face_crop` (WIDTHxHEIGHT+X+Y in source pixels) so the face is centred; the
-# offsets can be checked by drawing a rectangle on the source:
+# profile.jpg is 831x831, bright daylight, subject centred. A mild crop keeps the
+# head and shoulders, in colour. If profile.jpg is replaced, adjust
+# `face_crop` (WIDTHxHEIGHT+X+Y in source pixels) so the face is centred — you can
+# check the framing by drawing a rectangle on the source:
 #
 #   magick profile.jpg -resize 1000x1000! -stroke lime -fill none \
-#     -draw "rectangle 270,200 770,700" /tmp/check.png
+#     -draw "rectangle 277,200 770,700" /tmp/check.png
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -23,24 +22,23 @@ cd "$(dirname "$0")/.."
 src="profile.jpg"
 [ -f "$src" ] || { echo "error: $src not found"; exit 1; }
 
-# head and a little shoulder, centred on the face (1122 px square at +606+449)
-face_crop="1122x1122+606+449"
+# head and shoulders, centred on the face (580 px square at +125+75)
+face_crop="580x580+125+75"
 
-# black & white by default; set to toning="" to keep the original colour
-# (extra contrast is applied below, since a grey night shot looks flat)
-toning="-colorspace Gray"
+# colour is the current style; set toning="-colorspace Gray" for black & white
+toning=""
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
-# avatar: black & white, gentle lift, webp for the web
+# avatar: already well exposed, so only tone + sharpen
 magick "$src" -crop "$face_crop" +repage $toning -resize 320x320 \
-  -modulate 108,100 -brightness-contrast 0x6 -unsharp 0x0.75+0.6+0.02 -quality 88 \
+  -modulate 102,102 -unsharp 0x0.75+0.6+0.02 -quality 88 \
   static/img/avatar.webp
 
-# icons: stronger lift so the shape survives at 16 px
+# icons: a touch more contrast so the shape survives at 16 px
 magick "$src" -crop "$face_crop" +repage $toning -resize 180x180 \
-  -modulate 116,100 -brightness-contrast 4x10 -unsharp 0x0.8+0.7+0.02 \
+  -modulate 104,104 -brightness-contrast 0x4 -unsharp 0x0.8+0.7+0.02 \
   "$tmp/icon-180.png"
 
 magick "$tmp/icon-180.png" -resize 32x32 -unsharp 0x0.8+0.8+0.02 static/img/favicon-32x32.png

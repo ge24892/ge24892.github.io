@@ -1,7 +1,7 @@
 +++
 title = "BlackJack"
 description = "TODO: one-line description of this project."
-date = 2026-08-18
+date = 2025-11-18
 # updated = 2026-08-18
 aliases = ["/posts/blackjack/"] # old URL of this page, kept as a redirect
 

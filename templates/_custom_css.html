@@ -42,7 +42,7 @@
     --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
     --homepage-max-width: 768px;
     --main-max-width: 768px;
-    --avatar-size: 60px;
+    --avatar-size: 84px; # matches the height of the name + 2-line bio block on the home page
     --font-size: 16px;
     --line-height: 1.75;
     --img-border-radius: 0px;
@@ -63,6 +63,74 @@
   body:lang(zh) {
     --main-font: ui-sans-serif, system-ui, "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "WenQuanYi Micro Hei", sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --line-height: 1.9;
+  }
+
+  /* Figure floated beside the text: whatever follows in the markdown wraps
+     around it. Use class="float-left" or class="float-right" on the figure
+     component. Headings clear the float, so later sections stay full width. */
+  .prose figure.float-left,
+  .prose figure.float-right {
+    width: 280px;
+    max-width: 42%;
+    margin-top: 0.35em;
+    margin-bottom: 1em;
+  }
+  .prose figure.float-left { float: left; margin-right: 1.6em; }
+  .prose figure.float-right { float: right; margin-left: 1.6em; }
+  .prose figure.float-left img,
+  .prose figure.float-right img {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+  .prose figure.float-left figcaption,
+  .prose figure.float-right figcaption {
+    margin: 0.6em 0 0;
+    text-align: left;
+    font-size: 0.85em;
+  }
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    clear: both;
+  }
+  @media (max-width: 600px) {
+    .prose figure.float-left,
+    .prose figure.float-right {
+      float: none;
+      width: 100%;
+      max-width: 320px; /* a portrait photo should not fill a phone screen */
+      margin: 0 auto 1.5em;
+    }
+    .prose figure.float-left figcaption,
+    .prose figure.float-right figcaption {
+      text-align: center;
+    }
+  }
+
+  /* Compact lists on pages where a photo floats beside the text (About page),
+     so the text block stays as short as the image: the theme gives every list
+     item 0.5em of margin and a 1.75 line-height. Scoped with :has(), so only
+     prose that actually contains a floating figure is affected. */
+  .prose:has(figure.float-left) li,
+  .prose:has(figure.float-right) li {
+    margin: 0;
+    line-height: 1.45;
+  }
+  .prose:has(figure.float-left) ul,
+  .prose:has(figure.float-right) ul {
+    margin: 0.25em 0;
+    padding-left: 1.3em;
+  }
+  .prose:has(figure.float-left) ul ul,
+  .prose:has(figure.float-right) ul ul {
+    margin: 0 0 0.4em;
+  }
+  /* Multi-line bio: the home page bio comes from zola.toml, so it can be a TOML
+     """…""" string with newlines. `pre-line` turns those into real line breaks
+     while still collapsing runs of spaces. */
+  body #info #bio {
+    white-space: pre-line;
   }
 
   /* Square avatar instead of the theme's circle (only applies while

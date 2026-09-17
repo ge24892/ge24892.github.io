@@ -7,49 +7,43 @@ insert_anchor_links = "none"
 [extra]
 lang = "en"
 
-title = "About"
-subtitle = "Student: Columbia University Master of Mechanical Engineering"
+title = "About me"
+subtitle = ""
 +++
 
-I'm a master's student in Robotics and Control at Columbia University, expecting to
-graduate in January 2027. I did my undergraduate degree in Computer Engineering at
-UC Davis.
+{{ <figure src="profile_tall.jpg" caption="A photo of myself at the Bund Shanghai" class="float-right" section /> }}
 
-My focus is robot learning: fine-tuning VLA (vision-language-action) models on real
-data, world models, and transferring policies trained in simulation to the real
-robot. I've worked on pick-and-place and teleoperated data collection with
-six-axis arms, reinforcement learning for humanoids, and embedded-systems
-coursework.
+I'm currently interested in the field of Robot Learning and its application in manufacturing and retail. Here are some topics I'm actively learning in the field: 
+
+
+- Foundation Models
+    - Vision Language Action (VLA)
+    - World Action Models (WAM)
+- Reinforcement Learning
+    - Proximal Policy Optimization (PPO)
+    - Group Relative Policy Optimization (GRPO)
+- Diffusion Policy
+    - Diffusion Transformers (DiT)
+- Sim-to-Real
+    - Isaac Sim & Lab
+    - Mujoco
 
 ## Education
 
-**Columbia University** — MS, Mechanical Engineering (Robotics and Control), expected January 2027
+**Columbia University** — MS, Mechanical Engineering (Robotics & Control)
+- Courseworks: Kinematics of Machines and Robots, Machine Learning and High-Dimensional Data Analysis, Data Science for Mechanical Systems, Robotics Studio, Artificial Intelligence
 
-- Coursework: Robot Learning, Kinematics of Machines and Robots, Introduction to Robotics, Mathematics of Machine Learning, Signals, and Control, Machine Learning and High-Dimensional Data Analysis, Data Science for Mechanical Systems, Robotics Studio, Computer Vision, Deep Learning for NLP
-
-**University of California, Davis** — BS, Computer Engineering, August 2021 – December 2025
-
+**University of California, Davis** — BS, Computer Engineering, Sept 2021 – Dec 2025
+- Space and Satellite Systems Electrical Team
 - Dean's Honor List, Fall 2023
-- Coursework: Artificial Intelligence, Machine Learning, Algorithm Design and Analysis, Embedded Systems, Applied Probability
+- Courseworks: Machine Learning, Algorithm Design and Analysis, Embedded Systems, Applied Probability
 
-## Internships
-
-**Imperial College London · Prof. Astolfi · Robotics research** (July 2025 – August 2025)
-
-- Applied computer-vision techniques for robot perception — clustering (K-means, DBSCAN) and edge detection (Canny, Sobel)
-- Studied robot localization and mapping: beacon-based global localization, and graph-optimized SLAM from pose and observation constraints
-- Built a kinematic model of a six-axis arm from DH parameters, derived analytic forward and inverse kinematics, and implemented the corresponding control algorithms
-
-**Huaqin Technology Shanghai Global R&D Center** (June 2025 – July 2025)
-
-- Ran systematic ESD (electrostatic discharge) immunity testing on smartphone prototypes, covering air and contact discharge, and traced data-transfer interruptions and unintended reboots
-- Tested wireless charger performance, using an oscilloscope to measure charging current from 5 °C to 40 °C across load and temperature
 
 ## Skills
-
-- **Algorithms and frameworks:** imitation learning, reinforcement learning (PPO, Q-learning), MCTS, CNNs, PyTorch
-- **Robotics and simulation:** VLA policies (NVIDIA GR00T N1.7, Physical Intelligence π0), world models (LeRobot WAM, Fast-WAM), NVIDIA Isaac Sim, NVIDIA Isaac Lab, MuJoCo
-- **Languages and tools:** Python, C, C++, Docker, Ubuntu, Git, Conda, Hugging Face, CAD, Autodesk Fusion
+- **Simulation:** Isaac Sim, Isaac Lab, Mujoco
+- **Robot Foundation Models:** GR00T N1.7, PI0, FAST-WAM
+- **Language:** Python, Pytorch, C, C++
+- **Tools:** Docker, Ubuntu, Git, Conda, Autodesk Fusion
 
 ## Contact
 
