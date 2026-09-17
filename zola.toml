@@ -25,21 +25,31 @@ taxonomies = [{ name = "tags" }]
 # lives in the translation tables below and is rendered with `trans(key="...")`
 # in the overridden templates.
 
-[languages.zh]
-title = "何梓瑜"                    # shown as the page title of Chinese pages
-description = "何梓瑜的作品集：机器人学习、VLA 模型与仿真到真机"
-# Taxonomies are NOT inherited from the top-level config, they must be repeated:
-taxonomies = [{ name = "tags" }]
-# Feed filenames are NOT inherited either — without this, Chinese feeds would be
-# written as atom.xml (Zola's built-in template) instead of feed.xml (the theme's).
-feed_filenames = ["feed.xml"]
-
-# UI strings for the default language (English).
-# NOTE: a missing key is a hard build error, so every key must be defined for
-# every language.
+# ----------------------------------------------------------------------------
+# Chinese is parked: the [languages.zh*] tables below are commented out and the
+# Chinese content lives in zh-content/ instead of content/ (Zola errors on a .zh.md
+# file while its language is not configured).
+# Run scripts/restore-chinese.sh to bring it back.
+# ----------------------------------------------------------------------------
+# [languages.zh]
+# title = "何梓瑜"                    # shown as the page title of Chinese pages
+# description = "博士 哥伦比亚"
+# # Taxonomies are NOT inherited from the top-level config, they must be repeated:
+# taxonomies = [{ name = "tags" }]
+# # Feed filenames are NOT inherited either — without this, Chinese feeds would be
+# # written as atom.xml (Zola's built-in template) instead of feed.xml (the theme's).
+# feed_filenames = ["feed.xml"]
+#
+# # UI strings for the default language (English).
+# # NOTE: a missing key is a hard build error, so every key must be defined for
+# # every language.
 [translations]
 name = "Ziyu He"                                 # shown on the home page
-bio = "Student at Columbia University"           # shown on the home page
+
+bio = """
+Student at Columbia University
+M.S. Mechanical Engineering: Robotics & Control
+"""
 back = "Back"                               # back link on subpages
 tags = "Tags"                               # heading of the tag pages
 nav_projects = "projects"
@@ -51,20 +61,24 @@ footer_credits_before = "Built with"        # → "Built with zola and serene"
 footer_credits_and = "and"
 footer_credits_after = ""
 
-[languages.zh.translations]
-name = "何梓瑜"
-bio = "哥伦比亚大学机器人与控制硕士在读，研究机器人学习、VLA 模型与仿真到真机。"
-back = "返回"
-tags = "标签"
-nav_projects = "项目"
-nav_about = "关于"
-nav_posts = "文章"
-nav_github = "GitHub"
-footer_copyright = "© 2026 何梓瑜"
-footer_credits_before = "由"
-footer_credits_and = "和"
-footer_credits_after = "构建"
-
+# [languages.zh.translations]
+# name = "何梓瑜"
+#
+# bio = """
+# 在读哥伦比亚大学 
+# 硕士 机器人与控制
+# """
+# back = "返回"
+# tags = "标签"
+# nav_projects = "项目"
+# nav_about = "关于"
+# nav_posts = "文章"
+# nav_github = "GitHub"
+# footer_copyright = "© 2026 何梓瑜"
+# footer_credits_before = "由"
+# footer_credits_and = "和"
+# footer_credits_after = "构建"
+#
 [markdown]
 render_emoji = false
 external_links_target_blank = false

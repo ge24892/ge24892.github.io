@@ -25,6 +25,8 @@ import sys
 import tomllib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+
 CONTENT = ROOT / "content"
 LANG_SUFFIX = ".zh"  # non-default language
 
@@ -32,6 +34,16 @@ LANG_SUFFIX = ".zh"  # non-default language
 # every Chinese section sets `date_format`, English sections inherit the
 # site-wide value from zola.toml.
 ALLOWED_ONE_SIDED_EXTRA_KEYS = {"date_format"}
+
+# If the language is not configured in zola.toml (content parked, see
+# scripts/park-chinese.sh), there is nothing to compare — the English site is
+# allowed to be alone.
+import tomllib as _tomllib
+
+_config = _tomllib.loads((ROOT / "zola.toml").read_text())
+if LANG_SUFFIX.lstrip(".") not in _config.get("languages", {}):
+    print(f"language '{LANG_SUFFIX.lstrip('.')}' is not configured in zola.toml — parity check skipped")
+    raise SystemExit(0)
 
 
 def counterpart(path: pathlib.Path) -> pathlib.Path:

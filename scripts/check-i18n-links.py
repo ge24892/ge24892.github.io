@@ -44,6 +44,11 @@ def is_allowed(path: str, lang: str) -> bool:
     return any(path.startswith(prefix) for prefix in SHARED_PREFIXES)
 
 
+present = [lang for lang in LANGUAGES if (ROOT / "public" / lang).is_dir()]
+if not present:
+    print(f"no {'/'.join(LANGUAGES)}/ output — languages parked, link check skipped")
+    raise SystemExit(0)
+
 problems = []
 for lang in LANGUAGES:
     for page in sorted((ROOT / "public" / lang).rglob("*.html")):
