@@ -1,6 +1,6 @@
 +++
 title = "VLA Model Training"
-description = "Fine-tuned GR00T and π0 vision-language-action policies on self-collected data, using open-loop evaluation and on-robot tuning to reach 90% success."
+description = "Fine-tuned GR00T VLA model on teleoperation data."
 date = 2026-03-01 # project pages need a date (shown under the title); this is the start of the project period on the resume
 
 [extra]
@@ -10,11 +10,8 @@ toc = true
 
 ## Overview
 
-Fine-tuning vision-language-action (VLA) policies on pick-and-place data from my
-own six-axis arm — covering the whole loop from data collection and training to
-open-loop evaluation, on-robot deployment, and tuning.
+Fine-tuning VLA policies on pick-and-place teleoperation data.
 
-## What I did
 
 - Full fine-tuning of NVIDIA's GR00T VLA model on 60 episodes of self-collected
   teleoperated pick-and-place data from a six-axis arm
@@ -35,7 +32,6 @@ open-loop evaluation, on-robot deployment, and tuning.
 - LoRA fine-tuning of Physical Intelligence's π0 VLA model, logging learning-rate
   schedules and loss curves in Weights & Biases to tune hyperparameters
 
-## Results
 
-- Full fine-tuning of GR00T reached 70% pick-and-place success; raising
-  fine-tuning to 20k steps pushed it to 90%
+# GR00T N1.7 20k Steps
+<video controls preload="metadata" src="2_vial_sucess.mp4"></video>

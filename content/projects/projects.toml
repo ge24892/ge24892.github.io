@@ -22,7 +22,7 @@ flow = "stack"
 [[item]]
 title = "VLA Model Fine Tuning"
 #subtitle = "Robot Foundation Models"
-content = " Training a SO-101 Robot Arm with Pick and Place Task Full fine-tuning and LoRA fine-tuning of GR00T and π0 vision-language-action policies on self-collected teleoperation data, using open-loop evaluation and on-robot tuning to reach 90% pick-and-place success."
+content = "Fine-tuned GR00T VLA model on teleoperation data"
 link = "/projects/vla-training/"
 #badge = "2026"
 #tags = ["VLA", "GR00T"]
@@ -39,6 +39,7 @@ link = "/projects/sim2real/"
 title = "Quadrupedal Robot"
 #subtitle = "CAD, Reinforcement Learning, Simulation"
 content = "Designing and implementing a Quadupedal Robot to walk"
+image = "/projects/quad/title.png"
 link = "/projects/quad/"
 
 # [[item]]
