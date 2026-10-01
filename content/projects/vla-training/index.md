@@ -34,4 +34,4 @@ Fine-tuning VLA policies on pick-and-place teleoperation data.
 
 
 # GR00T N1.7 20k Steps
-<video controls preload="metadata" src="2_vial_sucess.mp4"></video>
+<video controls preload="metadata" playsinline poster="poster.jpg" src="2_vial_sucess.mp4"></video>
