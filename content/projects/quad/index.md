@@ -26,3 +26,5 @@ This project is part of MECE 4611 Robotics Studio.
 {{ <figure src="CAD5.png" alt="Exploded CAD view separating the body from the leg assemblies" caption="Body and leg exploded view" width="972" height="460" page /> }}
 
 ## Premiliary CAD Model Design 2
+
+**WIP**

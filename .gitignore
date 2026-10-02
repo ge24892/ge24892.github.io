@@ -7,3 +7,6 @@
 
 # The theme is a git submodule, do not track its contents here
 # (the submodule itself is recorded in .gitmodules)
+
+# original media kept out of git (transcoded versions live in content/)
+.originals/

@@ -23,17 +23,18 @@ flow = "stack"
 title = "VLA Model Fine Tuning"
 #subtitle = "Robot Foundation Models"
 content = "Fine-tuned GR00T VLA model on teleoperation data"
+image = "/projects/vla-training/thumb.jpg"
 link = "/projects/vla-training/"
 #badge = "2026"
 #tags = ["VLA", "GR00T"]
 
-[[item]]
-title = "Sim-to-Real"
-#subtitle = "Simulation"
-content = "Collect Teleop Dataset in Isaac Sim with camera and lighting domain randomization"
-link = "/projects/sim2real/"
-#badge = "2026"
-#tags = ["Isaac Sim", "Sim2Real"]
+# [[item]]
+# title = "Sim-to-Real"
+# #subtitle = "Simulation"
+# content = "Collect Teleop Dataset in Isaac Sim with camera and lighting domain randomization"
+# link = "/projects/sim2real/"
+# #badge = "2026"
+# #tags = ["Isaac Sim", "Sim2Real"]
 
 [[item]]
 title = "Quadrupedal Robot"
