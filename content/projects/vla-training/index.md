@@ -32,10 +32,10 @@ Fine-tuning VLA model on pick-and-place teleoperation data.
 - Use Weights&Biases logs to check on learning-rate and loss curves
 
 # Fail Case (60 Episodes)
-Having vial place in positions not shown in demonstration dataset positions cause failure.
+Having vial placed in positions not shown in demonstration dataset positions cause failure.
 <video controls preload="metadata" playsinline poster="fail_case_poster.jpg" src="fail_case.mp4"></video>
 
-# Sucess (100 Episodes)
+# Success (100 Episodes)
 The additional 40 episodes included the vial in more positions on the grey mat.
 <video controls preload="metadata" playsinline poster="thumb.jpg" src="2_vial_sucess.mp4"></video>
 
